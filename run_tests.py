@@ -15,9 +15,9 @@ from letter.letter import Letter
 from yeast.yeast import Yeast
 
 def test(item):
+    print(f'Iniciando: {item.name}')
     data, labels = item.read()
     data = z_normalize(data)
-    print(data.shape)
     counter = 0
     manhattan_stats = []
     try:
@@ -56,11 +56,11 @@ def test(item):
             counter += 1
         except:
             continue
-    np.savetxt(f'{item.name}/results_{item.name}2.txt', np.array(euclidean_stats), delimiter=',')
+    np.savetxt(f'{item.name}/{item.name}_results_2.txt', np.array(euclidean_stats), delimiter=',')
 
-    print(f'{item.name} concluído')
+    print(f'Finalizado: {item.name}')
 
 if __name__ == '__main__':
     tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
-    pool = multiprocessing.Pool(len(tests))
+    pool = multiprocessing.Pool(4)
     pool.map(test, tests)
