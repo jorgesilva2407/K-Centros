@@ -12,5 +12,4 @@ class Churn():
         data = data.to_numpy()
         labels = data[:,-1]
         data = data[:,:-1]
-        print(labels)
         return data, labels

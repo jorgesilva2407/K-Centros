@@ -17,8 +17,7 @@ class Yeast():
         data = np.array(data)
         labels = np.vectorize(Yeast.sub)(data[:,-1])
         data = np.vectorize(float)(data[:,1:-1])
-        print(data)
-        print(labels)
+        return data, labels
     
     @staticmethod
     def sub(val: str) -> int:

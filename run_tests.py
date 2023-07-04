@@ -1,3 +1,4 @@
+import multiprocessing
 from k_centros import z_normalize, calc_dists, fit_k_centers, predict_k_centers
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import adjusted_rand_score
@@ -13,18 +14,20 @@ from grid.grid import Grid
 from letter.letter import Letter
 from yeast.yeast import Yeast
 
-tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
-
-for test in tests:
-    data, labels = test.read()
+def test(item):
+    data, labels = item.read()
     data = z_normalize(data)
     print(data.shape)
     counter = 0
     manhattan_stats = []
-    manhattan_dists = calc_dists(data, 1)
+    try:
+        manhattan_dists = np.loadtxt(f'{item.name}/{item.name}_manhattan.txt', delimiter=',')
+    except:
+        manhattan_dists = calc_dists(data, 1)
+        np.savetxt(f'{item.name}/{item.name}_manhattan.txt', manhattan_dists, delimiter=',')
     while counter < 30:
         try:
-            radius, centers_indexes = fit_k_centers(manhattan_dists, test.n_centers)
+            radius, centers_indexes = fit_k_centers(manhattan_dists, item.n_centers)
             centers = data[centers_indexes]
             pred_labels = predict_k_centers(data, centers, 1)
             silhouette = silhouette_score(data, pred_labels, metric='manhattan')
@@ -33,15 +36,18 @@ for test in tests:
             counter += 1
         except:
             continue
-
-    np.savetxt(f'{test.name}/results_{test.name}1.txt', np.array(manhattan_stats), delimiter=',')
+    np.savetxt(f'{item.name}/results_{item.name}1.txt', np.array(manhattan_stats), delimiter=',')
 
     counter = 0
     euclidean_stats = []
-    euclidean_dists = calc_dists(data, 1)
+    try:
+        euclidean_dists = np.loadtxt(f'{item.name}/{item.name}_euclidean.txt', delimiter=',')
+    except:
+        euclidean_dists = calc_dists(data, 1)
+        np.savetxt(f'{item.name}/{item.name}_euclidean.txt', euclidean_dists, delimiter=',')
     while counter < 30:
         try:
-            radius, centers_indexes = fit_k_centers(euclidean_dists, 2)
+            radius, centers_indexes = fit_k_centers(euclidean_dists, item.n_centers)
             centers = data[centers_indexes]
             pred_labels = predict_k_centers(data, centers, 2)
             silhouette = silhouette_score(data, pred_labels, metric='euclidean')
@@ -50,5 +56,11 @@ for test in tests:
             counter += 1
         except:
             continue
+    np.savetxt(f'{item.name}/results_{item.name}2.txt', np.array(euclidean_stats), delimiter=',')
 
-    np.savetxt(f'{test.name}/results_{test.name}2.txt', np.array(euclidean_stats), delimiter=',')
+    print(f'{item.name} concluído')
+
+if __name__ == '__main__':
+    tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
+    pool = multiprocessing.Pool(len(tests))
+    pool.map(test, tests)
