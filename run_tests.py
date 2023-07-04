@@ -62,5 +62,5 @@ def test(item):
 
 if __name__ == '__main__':
     tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
-    pool = multiprocessing.Pool(4)
+    pool = multiprocessing.Pool(2)
     pool.map(test, tests)

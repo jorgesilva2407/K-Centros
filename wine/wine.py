@@ -3,7 +3,7 @@
 import pandas as pd
 
 class Wine():
-    name = 'spam'
+    name = 'wine'
     n_centers = 11
 
     @staticmethod
