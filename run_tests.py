@@ -17,6 +17,8 @@ from yeast.yeast import Yeast
 def test(item):
     print(f'Iniciando: {item.name}')
     data, labels = item.read()
+    data = data.astype(np.float64)
+    labels = labels.astype(np.int64)
     data = z_normalize(data)
     counter = 0
     manhattan_stats = []
