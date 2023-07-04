@@ -2,6 +2,13 @@
 
 import numpy as np
 
-data = np.loadtxt('banknote/data_banknote_authentication.txt', delimiter=',')
+class Banknote():
+    name = 'banknote'
+    n_centers = 2
 
-print(data)
+    @staticmethod
+    def read():
+        data = np.loadtxt('banknote/data_banknote_authentication.txt', delimiter=',')
+        labels = data[:,-1]
+        data = data[:,:-1]
+        return data, labels

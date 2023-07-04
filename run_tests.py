@@ -4,18 +4,27 @@ from sklearn.metrics import adjusted_rand_score
 import numpy as np
 from spam.spam import Spam
 from wine.wine import Wine
+from androgen.androgen import Androgen
+from banknote.banknote import Banknote
+from bean.bean import Bean
+from churn.churn import Churn
+from gamma.gamma import Gamma
+from grid.grid import Grid
+from letter.letter import Letter
+from yeast.yeast import Yeast
 
-# tests = [Spam(), Wine()]
-tests = [Wine()]
+tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
 
 for test in tests:
     data, labels = test.read()
+    data = z_normalize(data)
+    print(data.shape)
     counter = 0
     manhattan_stats = []
     manhattan_dists = calc_dists(data, 1)
     while counter < 30:
         try:
-            radius, centers_indexes = fit_k_centers(manhattan_dists, 2)
+            radius, centers_indexes = fit_k_centers(manhattan_dists, test.n_centers)
             centers = data[centers_indexes]
             pred_labels = predict_k_centers(data, centers, 1)
             silhouette = silhouette_score(data, pred_labels, metric='manhattan')

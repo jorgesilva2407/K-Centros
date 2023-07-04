@@ -1,8 +1,10 @@
+# https://archive.ics.uci.edu/dataset/186/wine+quality
+
 import pandas as pd
 
 class Wine():
-    def __init__(self) -> None:
-        name = 'spam'
+    name = 'spam'
+    n_centers = 11
 
     @staticmethod
     def read():
