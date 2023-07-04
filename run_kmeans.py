@@ -1,5 +1,5 @@
 import multiprocessing
-from k_centros import Minkowski_dist
+from k_centros import Minkowski_dist, z_normalize
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import adjusted_rand_score
@@ -30,18 +30,33 @@ def test(item):
     data = data.astype(np.float64)
     labels = labels.astype(np.int64)
     counter = 0
-    manhattan_stats = []
+    original_stats = []
     while counter < 30:
         try:
             kmeans = KMeans(n_clusters=item.n_centers, n_init='auto').fit(data)
             silhouette = silhouette_score(data, kmeans.labels_)
             rand = adjusted_rand_score(labels, kmeans.labels_)
             radius = get_radius(data, kmeans.cluster_centers_, kmeans.labels_)
-            manhattan_stats.append([radius, silhouette, rand])
+            original_stats.append([radius, silhouette, rand])
             counter += 1
         except:
             continue
-    np.savetxt(f'{item.name}/{item.name}_results_kmeans.txt', np.array(manhattan_stats), delimiter=',')
+    np.savetxt(f'{item.name}/{item.name}_results_kmeans.txt', np.array(original_stats), delimiter=',')
+
+    n_data = z_normalize(data)
+    counter = 0
+    normalized_stats = []
+    while counter < 30:
+        try:
+            kmeans = KMeans(n_clusters=item.n_centers, n_init='auto').fit(n_data)
+            silhouette = silhouette_score(n_data, kmeans.labels_)
+            rand = adjusted_rand_score(labels, kmeans.labels_)
+            radius = get_radius(n_data, kmeans.cluster_centers_, kmeans.labels_)
+            normalized_stats.append([radius, silhouette, rand])
+            counter += 1
+        except:
+            continue
+    np.savetxt(f'{item.name}/{item.name}_results_kmeans_normalized.txt', np.array(normalized_stats), delimiter=',')
 
     print(f'Finalizado: {item.name}')
 
