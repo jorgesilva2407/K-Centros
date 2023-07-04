@@ -16,6 +16,7 @@ from yeast.yeast import Yeast
 
 def test(item):
     print(f'Iniciando: {item.name}')
+    
     data, labels = item.read()
     data = data.astype(np.float64)
     labels = labels.astype(np.int64)
@@ -38,7 +39,7 @@ def test(item):
             counter += 1
         except:
             continue
-    np.savetxt(f'{item.name}/results_{item.name}1.txt', np.array(manhattan_stats), delimiter=',')
+    np.savetxt(f'{item.name}/{item.name}_results_1.txt', np.array(manhattan_stats), delimiter=',')
 
     counter = 0
     euclidean_stats = []
@@ -64,5 +65,5 @@ def test(item):
 
 if __name__ == '__main__':
     tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
-    pool = multiprocessing.Pool(2)
+    pool = multiprocessing.Pool(4)
     pool.map(test, tests)
