@@ -21,4 +21,4 @@ for i in range(10):
 cols = ['radius_mean', 'radius_std', 'silhouette_mean', 'silhouette_std', 'rand_mean', 'rand_std']
 df = pd.DataFrame(array, columns=cols, index=tests)
 
-dfi.export(df, 'results2.png')
+dfi.export(df, 'images/results2.png')
