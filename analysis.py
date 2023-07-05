@@ -10,7 +10,7 @@ df = pd.DataFrame()
 
 array = np.zeros((10,6))
 for i in range(10):
-    results = np.loadtxt(f'{tests[i]}/{tests[i]}_results_kmeans.txt', delimiter=',')
+    results = np.loadtxt(f'{tests[i]}/{tests[i]}_results_2.txt', delimiter=',')
     array[i, 0] = np.mean(results[:,0])
     array[i, 1] = np.std(results[:,0])
     array[i, 2] = np.mean(results[:,1])
@@ -21,4 +21,4 @@ for i in range(10):
 cols = ['radius_mean', 'radius_std', 'silhouette_mean', 'silhouette_std', 'rand_mean', 'rand_std']
 df = pd.DataFrame(array, columns=cols, index=tests)
 
-dfi.export(df, 'results_kmeans.png')
+dfi.export(df, 'results2.png')

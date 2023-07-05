@@ -46,7 +46,7 @@ def test(item):
     try:
         euclidean_dists = np.loadtxt(f'{item.name}/{item.name}_euclidean.txt', delimiter=',')
     except:
-        euclidean_dists = calc_dists(data, 1)
+        euclidean_dists = calc_dists(data, 2)
         np.savetxt(f'{item.name}/{item.name}_euclidean.txt', euclidean_dists, delimiter=',')
     while counter < 30:
         try:
@@ -65,5 +65,5 @@ def test(item):
 
 if __name__ == '__main__':
     tests = [Androgen(), Banknote(), Bean(), Churn(), Gamma(), Grid(), Letter(), Spam(), Wine(), Yeast()]
-    pool = multiprocessing.Pool(4)
+    pool = multiprocessing.Pool(10)
     pool.map(test, tests)
