@@ -5,7 +5,6 @@ import dataframe_image as dfi
 import os
 
 tests = ['gamma', 'spam', 'androgen', 'bean', 'letter', 'wine', 'banknote', 'yeast', 'churn', 'grid']
-# /Users/jorgesilva/workspace/ufmg/2023-1/ALG2/TP2/gamma/gamma_results_1.txt
 
 df = pd.DataFrame()
 
